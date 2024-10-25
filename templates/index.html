@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción de Fraude</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            background-color: rgb(13, 14, 26);
+            position: relative;
+            color: white; /* Color del texto en blanco */
+        }
+        .circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            opacity: 0.7;
+            z-index: 0; /* Z-index para que los círculos estén detrás */
+        }
+        .circle-large {
+            width: 450px;  /* Tamaño del círculo celeste exterior */
+            height: 450px; /* Tamaño del círculo celeste exterior */
+            background-color: rgb(30, 11, 84);
+            filter: blur(50px);
+        }
+        .circle-purple {
+            width: 300px;  /* Tamaño del círculo morado */
+            height: 300px; /* Tamaño del círculo morado */
+            background-color: rgb(25, 52, 150);
+            filter: blur(50px);
+        }
+        .circle-blue {
+            width: 225px;  /* Tamaño del círculo celeste */
+            height: 225px; /* Tamaño del círculo celeste */
+            background-color: rgb(25, 52, 150);
+            filter: blur(40px);
+        }
+        .circle-pink {
+            width: 112.5px;  /* Tamaño del círculo rosa */
+            height: 112.5px; /* Tamaño del círculo rosa */
+            background-color: rgb(168, 0, 30);
+            filter: blur(20px);
+        }
+        form {
+            margin-top: 20px;
+            position: relative; /* Para que el formulario esté sobre el fondo */
+            z-index: 2; /* Asegura que el formulario esté en frente */
+        }
+        input[type="file"] {
+            display: none; /* Oculta el input */
+        }
+        .file-label {
+            border: 2px solid white; /* Borde blanco */
+            padding: 10px; /* Espaciado interno */
+            border-radius: 5px; /* Bordes redondeados */
+            background-color: transparent; /* Fondo transparente */
+            color: white; /* Texto blanco */
+            cursor: pointer; /* Cambia el cursor al pasar sobre el label */
+            z-index: 2; /* Asegura que el label esté en frente */
+        }
+        .selected-file {
+            margin: 20px 0; /* Mayor espaciado superior e inferior */
+            color: white; /* Texto blanco */
+            z-index: 1; /* Asegura que el texto esté en frente */
+        }
+        h1, p {
+            z-index: 1; /* Asegura que el texto esté en frente */
+            position: relative; /* Necesario para aplicar el z-index */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Sombra del texto */
+        }
+        a {
+            color: white; /* Color de los enlaces en blanco */
+            font-size: 22px; /* Tamaño de fuente del enlace */
+            text-decoration: underline; /* Subrayado para hacer más claro que es un enlace */
+            cursor: pointer; /* Cambia el cursor al pasar sobre el enlace */
+            z-index: 3; /* Asegura que el enlace esté en frente */
+            display: inline-block; /* Asegura que el enlace sea seleccionable */
+        }
+        #loading {
+            display: none; /* Inicialmente oculto */
+            margin-top: 20px;
+            font-size: 24px; /* Tamaño de fuente para "Cargando..." */
+            font-weight: bold;
+            color: white; /* Asegura que el texto sea blanco */
+        }
+        #result {
+            color: white; /* Asegura que el resultado sea blanco */
+            font-size: 22px; /* Tamaño de fuente para el resultado */
+            margin-top: 20px; /* Margen superior para el resultado */
+            z-index: 1; /* Asegura que el resultado esté en frente */
+        }
+        /* Contenedor para mantener el espacio de Cargando y resultado */
+        .status-container {
+            min-height: 50px; /* Altura mínima para evitar movimiento */
+            margin-top: 20px; /* Margen superior */
+            z-index: 1; /* Asegura que el contenedor esté en frente */
+        }
+    </style>
+</head>
+<body>
+    <div class="circle circle-large"></div>
+    <div class="circle circle-purple"></div>
+    <div class="circle circle-blue"></div>
+    <div class="circle circle-pink"></div>
+
+    <h1>Subir archivo para predicción de fraude</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label class="file-label" for="file-input">Seleccionar archivo</label>
+        <input type="file" id="file-input" name="file" required onchange="updateFileName()">
+        <div class="selected-file" id="selected-file">Archivos seleccionados: Ninguno</div>
+        <button type="submit">Enviar</button>
+    </form>
+    <p>Recordar que debe tener las columnas adecuadas.</p>
+    <div class="status-container">
+        <div id="loading">Cargando<span id="dots">...</span></div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function updateFileName() {
+            const input = document.getElementById('file-input');
+            const label = document.getElementById('selected-file');
+            const fileName = input.files.length > 0 ? input.files[0].name : 'Ninguno';
+            label.textContent = `Archivos seleccionados: ${fileName}`;
+        }
+
+        document.getElementById('uploadForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const loadingMessage = document.getElementById('loading');
+            const dots = document.getElementById('dots');
+
+            loadingMessage.style.display = 'block'; // Muestra el mensaje de carga
+
+            // Animación de puntos suspensivos
+            let dotCount = 0;
+            const dotAnimation = setInterval(() => {
+                dotCount = (dotCount + 1) % 4; // Alterna entre 0 y 3
+                dots.textContent = '.'.repeat(dotCount);
+            }, 500); // Cambia cada 500 ms
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                clearInterval(dotAnimation); // Detiene la animación de puntos
+                loadingMessage.style.display = 'none'; // Oculta el mensaje de carga
+
+                if (data.output_file) {
+                    const downloadLink = `<a href="/download/${data.output_file}" download>Descargar resultados</a>`;
+                    document.getElementById('result').innerHTML = downloadLink;
+                } else {
+                    document.getElementById('result').innerText = data.error;
+                }
+            } catch (error) {
+                clearInterval(dotAnimation);
+                loadingMessage.style.display = 'none'; // Oculta el mensaje de carga
+                document.getElementById('result').innerText = 'Error en la conexión. Inténtalo de nuevo.';
+                console.error(error); // Muestra el error en la consola
+            }
+        };
+    </script>
+</body>
+</html>
