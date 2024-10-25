@@ -261,7 +261,7 @@ def predict():
     output_file_name = f"resultado_{original_filename}.csv"
     output_file_path = os.path.join(output_folder, output_file_name)
 
-    resultados_df.to_csv(output_file_path, index=False)
+    # resultados_df.to_csv(output_file_path, index=False)
 
     return jsonify({'message': 'Predicciones guardadas en CSV', 'output_file': output_file_name})
 
