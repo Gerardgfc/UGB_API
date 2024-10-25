@@ -222,7 +222,7 @@ def home():
             } catch (error) {
                 clearInterval(dotAnimation);
                 loadingMessage.style.display = 'none';
-                document.getElementById('result').innerText = 'Error en la conexión. Inténtalo de nuevo.';
+                document.getElementById('result').innerText = 'Error en la conexión. Recargue la págiana e inténtalo de nuevo.';
                 console.error(error);
             }
         };
