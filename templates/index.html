@@ -15,7 +15,7 @@
             text-align: center;
             background-color: rgb(13, 14, 26);
             position: relative;
-            color: white; /* Color del texto en blanco */
+            color: white;
         }
         .circle {
             position: absolute;
@@ -24,85 +24,84 @@
             transform: translate(-50%, -50%);
             border-radius: 50%;
             opacity: 0.7;
-            z-index: 0; /* Z-index para que los círculos estén detrás */
+            z-index: 0;
         }
         .circle-large {
-            width: 450px;  /* Tamaño del círculo celeste exterior */
-            height: 450px; /* Tamaño del círculo celeste exterior */
+            width: 450px;
+            height: 450px;
             background-color: rgb(30, 11, 84);
             filter: blur(50px);
         }
         .circle-purple {
-            width: 300px;  /* Tamaño del círculo morado */
-            height: 300px; /* Tamaño del círculo morado */
+            width: 300px;
+            height: 300px;
             background-color: rgb(25, 52, 150);
             filter: blur(50px);
         }
         .circle-blue {
-            width: 225px;  /* Tamaño del círculo celeste */
-            height: 225px; /* Tamaño del círculo celeste */
+            width: 225px;
+            height: 225px;
             background-color: rgb(25, 52, 150);
             filter: blur(40px);
         }
         .circle-pink {
-            width: 112.5px;  /* Tamaño del círculo rosa */
-            height: 112.5px; /* Tamaño del círculo rosa */
+            width: 112.5px;
+            height: 112.5px;
             background-color: rgb(168, 0, 30);
             filter: blur(20px);
         }
         form {
             margin-top: 20px;
-            position: relative; /* Para que el formulario esté sobre el fondo */
-            z-index: 2; /* Asegura que el formulario esté en frente */
+            position: relative;
+            z-index: 2;
         }
         input[type="file"] {
-            display: none; /* Oculta el input */
+            display: none;
         }
         .file-label {
-            border: 2px solid white; /* Borde blanco */
-            padding: 10px; /* Espaciado interno */
-            border-radius: 5px; /* Bordes redondeados */
-            background-color: transparent; /* Fondo transparente */
-            color: white; /* Texto blanco */
-            cursor: pointer; /* Cambia el cursor al pasar sobre el label */
-            z-index: 2; /* Asegura que el label esté en frente */
+            border: 2px solid white;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            z-index: 2;
         }
         .selected-file {
-            margin: 20px 0; /* Mayor espaciado superior e inferior */
-            color: white; /* Texto blanco */
-            z-index: 1; /* Asegura que el texto esté en frente */
+            margin: 20px 0;
+            color: white;
+            z-index: 1;
         }
         h1, p {
-            z-index: 1; /* Asegura que el texto esté en frente */
-            position: relative; /* Necesario para aplicar el z-index */
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Sombra del texto */
+            z-index: 1;
+            position: relative;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
         }
         a {
-            color: white; /* Color de los enlaces en blanco */
-            font-size: 22px; /* Tamaño de fuente del enlace */
-            text-decoration: underline; /* Subrayado para hacer más claro que es un enlace */
-            cursor: pointer; /* Cambia el cursor al pasar sobre el enlace */
-            z-index: 3; /* Asegura que el enlace esté en frente */
-            display: inline-block; /* Asegura que el enlace sea seleccionable */
+            color: white;
+            font-size: 22px;
+            text-decoration: underline;
+            cursor: pointer;
+            z-index: 3;
+            display: inline-block;
         }
         #loading {
-            display: none; /* Inicialmente oculto */
+            display: none;
             margin-top: 20px;
-            font-size: 24px; /* Tamaño de fuente para "Cargando..." */
+            font-size: 24px;
             font-weight: bold;
-            color: white; /* Asegura que el texto sea blanco */
+            color: white;
         }
         #result {
-            color: white; /* Asegura que el resultado sea blanco */
-            font-size: 22px; /* Tamaño de fuente para el resultado */
-            margin-top: 20px; /* Margen superior para el resultado */
-            z-index: 1; /* Asegura que el resultado esté en frente */
+            color: white;
+            font-size: 22px;
+            margin-top: 20px;
+            z-index: 1;
         }
-        /* Contenedor para mantener el espacio de Cargando y resultado */
         .status-container {
-            min-height: 50px; /* Altura mínima para evitar movimiento */
-            margin-top: 20px; /* Margen superior */
-            z-index: 1; /* Asegura que el contenedor esté en frente */
+            min-height: 50px;
+            margin-top: 20px;
+            z-index: 1;
         }
     </style>
 </head>
@@ -120,6 +119,7 @@
         <button type="submit">Enviar</button>
     </form>
     <p>Recordar que debe tener las columnas adecuadas.</p>
+    <p>Y NO DEBE CONTENER MÁS DE 999.999 FILAS</p>
     <div class="status-container">
         <div id="loading">Cargando<span id="dots">...</span></div>
         <div id="result"></div>
@@ -139,14 +139,13 @@
             const loadingMessage = document.getElementById('loading');
             const dots = document.getElementById('dots');
 
-            loadingMessage.style.display = 'block'; // Muestra el mensaje de carga
+            loadingMessage.style.display = 'block';
 
-            // Animación de puntos suspensivos
             let dotCount = 0;
             const dotAnimation = setInterval(() => {
-                dotCount = (dotCount + 1) % 4; // Alterna entre 0 y 3
+                dotCount = (dotCount + 1) % 4;
                 dots.textContent = '.'.repeat(dotCount);
-            }, 500); // Cambia cada 500 ms
+            }, 500);
 
             try {
                 const response = await fetch('/predict', {
@@ -155,8 +154,8 @@
                 });
                 const data = await response.json();
 
-                clearInterval(dotAnimation); // Detiene la animación de puntos
-                loadingMessage.style.display = 'none'; // Oculta el mensaje de carga
+                clearInterval(dotAnimation);
+                loadingMessage.style.display = 'none';
 
                 if (data.output_file) {
                     const downloadLink = `<a href="/download/${data.output_file}" download>Descargar resultados</a>`;
@@ -166,9 +165,9 @@
                 }
             } catch (error) {
                 clearInterval(dotAnimation);
-                loadingMessage.style.display = 'none'; // Oculta el mensaje de carga
+                loadingMessage.style.display = 'none';
                 document.getElementById('result').innerText = 'Error en la conexión. Inténtalo de nuevo.';
-                console.error(error); // Muestra el error en la consola
+                console.error(error);
             }
         };
     </script>
