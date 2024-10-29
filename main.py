@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template
+from flask import Flask, request, jsonify, send_from_directory, send_file, render_template
 import joblib
 import pandas as pd
 import os
@@ -96,7 +96,9 @@ def predict():
 
 @app.route('/download/<path:filename>', methods=['GET'])
 def download_file(filename):
-    return send_from_directory('resultados', filename, as_attachment=True)
+    path = os.path.join('resultados', filename)
+    return send_file(path, mimetype='text/csv', as_attachment=True, download_name=filename)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=os.getenv('PORT', default=5000))
