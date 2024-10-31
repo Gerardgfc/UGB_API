@@ -113,22 +113,17 @@ def predict():
 
         output = BytesIO()
         
-        if file.filename.endswith('.csv'):
-            resultados_df.to_csv(output, index=False)
-            mimetype = 'text/csv'
-            download_name = 'resultado.csv'
-        elif file.filename.endswith('.xlsx'):
-            resultados_df.to_excel(output, index=False, engine='openpyxl')
-            mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            download_name = 'resultado.xlsx'
-        else:
-            return jsonify({'error': 'Formato de archivo no soportado.'}), 400
+        # Siempre guardar como Excel
+        resultados_df.to_excel(output, index=False, engine='openpyxl')
+        mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        download_name = 'resultado.xlsx'
         
         output.seek(0)
 
         return send_file(output, mimetype=mimetype, as_attachment=True, download_name=download_name)
     except Exception as e:
         return jsonify({'error': f'Error en la predicción: {str(e)}'}), 500
+
 
 
 
