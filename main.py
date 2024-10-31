@@ -54,8 +54,11 @@ def preparar_dataframe(df):
     return df_filtrado, None
 
 def preprocesar_datos(data_df):
-    data_df_normalizado = escalador.fit_transform(data_df)
-    return pd.DataFrame(data_df_normalizado, columns=data_df.columns)
+    try:
+        data_df_normalizado = escalador.fit_transform(data_df)
+        return pd.DataFrame(data_df_normalizado, columns=data_df.columns)
+    except ValueError as e:
+        raise ValueError(f"Error en la conversión de datos: {str(e)}")
 
 @app.route('/')
 def home():
@@ -71,7 +74,6 @@ def predict():
     if file.filename == '':
         return jsonify({'error': 'Archivo no cargado'}), 400
     
-    # Determinar el tipo de archivo y leerlo
     try:
         if file.filename.endswith('.csv'):
             data_df = pd.read_csv(file)
@@ -85,6 +87,10 @@ def predict():
     data_df_preparado, error = preparar_dataframe(data_df)
     if error:
         return jsonify({'error': error}), 400
+
+    # Separar la columna ID antes de preprocesar
+    id_column = data_df_preparado['ID']
+    data_df_preparado = data_df_preparado.drop(columns=['ID'])
 
     try:
         data_df_preprocesado = preprocesar_datos(data_df_preparado)
@@ -101,13 +107,12 @@ def predict():
         
         # Crear DataFrame con las predicciones y la columna ID
         resultados_df = pd.DataFrame(data={
-            'ID': data_df_preparado['ID'],  # Agregar la columna ID
+            'ID': id_column.values,  # Mantener la columna ID original
             'predicciones': prediccion_texto  # Usar los nuevos valores
         })
 
         output = BytesIO()
         
-        # Devolver el mismo formato de archivo que se recibió
         if file.filename.endswith('.csv'):
             resultados_df.to_csv(output, index=False)
             mimetype = 'text/csv'
@@ -122,7 +127,6 @@ def predict():
         return send_file(output, mimetype=mimetype, as_attachment=True, download_name=download_name)
     except Exception as e:
         return jsonify({'error': f'Error en la predicción: {str(e)}'}), 500
-
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=os.getenv('PORT', default=5000))
