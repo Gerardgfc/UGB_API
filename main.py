@@ -117,8 +117,8 @@ def predict():
             resultados_df.to_csv(output, index=False)
             mimetype = 'text/csv'
             download_name = 'resultado.csv'
-        else:
-            resultados_df.to_excel(output, index=False)
+        else:  # Si es un archivo Excel
+            resultados_df.to_excel(output, index=False, engine='openpyxl')
             mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             download_name = 'resultado.xlsx'
         
@@ -127,6 +127,7 @@ def predict():
         return send_file(output, mimetype=mimetype, as_attachment=True, download_name=download_name)
     except Exception as e:
         return jsonify({'error': f'Error en la predicción: {str(e)}'}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=os.getenv('PORT', default=5000))
