@@ -88,7 +88,6 @@ def predict():
     if error:
         return jsonify({'error': error}), 400
 
-    # Separar la columna ID antes de preprocesar
     id_column = data_df_preparado['ID']
     data_df_preparado = data_df_preparado.drop(columns=['ID'])
 
@@ -101,29 +100,33 @@ def predict():
 
     try:
         prediccion = modelo.predict(data_df_preprocesado)
-        
-        # Cambiar los valores de 0 y 1 a 'no fraude' y 'fraude'
         prediccion_texto = ['fraude' if p == 1 else 'no fraude' for p in prediccion]
-        
-        # Crear DataFrame con las predicciones y la columna ID
+
         resultados_df = pd.DataFrame(data={
-            'ID': id_column.values,  # Mantener la columna ID original
-            'predicciones': prediccion_texto  # Usar los nuevos valores
+            'ID': id_column.values,
+            'predicciones': prediccion_texto
         })
 
         output = BytesIO()
-        
-        # Siempre guardar como Excel
-        resultados_df.to_excel(output, index=False, engine='openpyxl')
-        mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        download_name = 'resultado.xlsx'
+
+        # Obtener el nombre original del archivo y construir el nombre del archivo de salida
+        base_name = file.filename.rsplit('.', 1)[0]
+        if file.filename.endswith('.csv'):
+            resultados_df.to_csv(output, index=False)
+            mimetype = 'text/csv'
+            download_name = f'resultado_{base_name}.csv'
+        elif file.filename.endswith('.xlsx'):
+            resultados_df.to_excel(output, index=False, engine='openpyxl')
+            mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            download_name = f'resultado_{base_name}.xlsx'
+        else:
+            return jsonify({'error': 'Formato de archivo no soportado.'}), 400
         
         output.seek(0)
 
         return send_file(output, mimetype=mimetype, as_attachment=True, download_name=download_name)
     except Exception as e:
         return jsonify({'error': f'Error en la predicción: {str(e)}'}), 500
-
 
 
 
