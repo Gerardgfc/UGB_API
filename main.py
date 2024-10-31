@@ -117,16 +117,19 @@ def predict():
             resultados_df.to_csv(output, index=False)
             mimetype = 'text/csv'
             download_name = 'resultado.csv'
-        else:  # Si es un archivo Excel
+        elif file.filename.endswith('.xlsx'):
             resultados_df.to_excel(output, index=False, engine='openpyxl')
             mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             download_name = 'resultado.xlsx'
+        else:
+            return jsonify({'error': 'Formato de archivo no soportado.'}), 400
         
         output.seek(0)
 
         return send_file(output, mimetype=mimetype, as_attachment=True, download_name=download_name)
     except Exception as e:
         return jsonify({'error': f'Error en la predicción: {str(e)}'}), 500
+
 
 
 if __name__ == '__main__':
