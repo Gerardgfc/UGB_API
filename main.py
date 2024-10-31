@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory, send_file, render_template
+from flask import Flask, request, jsonify, send_file, render_template
 import joblib
 import pandas as pd
 import os
@@ -25,7 +25,7 @@ escalador = StandardScaler()
 
 # Definir las columnas necesarias
 columnas_modelo = [
-    'ID','income', 'name_email_similarity', 'current_address_months_count', 
+    'ID', 'income', 'name_email_similarity', 'current_address_months_count', 
     'customer_age', 'days_since_request', 'bank_branch_count_8w', 
     'date_of_birth_distinct_emails_4w', 'credit_risk_score', 'email_is_free', 
     'phone_home_valid', 'phone_mobile_valid', 'bank_months_count', 
@@ -65,14 +65,22 @@ def home():
 def predict():
     if 'file' not in request.files:
         return jsonify({'error': 'No hay parte de archivo en la solicitud'}), 400
+    
     file = request.files['file']
+    
     if file.filename == '':
         return jsonify({'error': 'Archivo no cargado'}), 400
-
+    
+    # Determinar el tipo de archivo y leerlo
     try:
-        data_df = pd.read_csv(file)
+        if file.filename.endswith('.csv'):
+            data_df = pd.read_csv(file)
+        elif file.filename.endswith('.xlsx'):
+            data_df = pd.read_excel(file)
+        else:
+            return jsonify({'error': 'Formato de archivo no soportado. Use CSV o Excel.'}), 400
     except Exception as e:
-        return jsonify({'error': f'Error al leer el archivo CSV: {str(e)}'}), 400
+        return jsonify({'error': f'Error al leer el archivo: {str(e)}'}), 400
 
     data_df_preparado, error = preparar_dataframe(data_df)
     if error:
@@ -85,13 +93,31 @@ def predict():
 
     try:
         prediccion = modelo.predict(data_df_preprocesado)
-        resultados_df = pd.DataFrame(data={'predicciones': prediccion})
+        
+        # Cambiar los valores de 0 y 1 a 'no fraude' y 'fraude'
+        prediccion_texto = ['fraude' if p == 1 else 'no fraude' for p in prediccion]
+        
+        # Crear DataFrame con las predicciones y la columna ID
+        resultados_df = pd.DataFrame(data={
+            'ID': data_df_preparado['ID'],  # Agregar la columna ID
+            'predicciones': prediccion_texto  # Usar los nuevos valores
+        })
 
         output = BytesIO()
-        resultados_df.to_csv(output, index=False)
+        
+        # Devolver el mismo formato de archivo que se recibió
+        if file.filename.endswith('.csv'):
+            resultados_df.to_csv(output, index=False)
+            mimetype = 'text/csv'
+            download_name = 'resultado.csv'
+        else:
+            resultados_df.to_excel(output, index=False)
+            mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            download_name = 'resultado.xlsx'
+        
         output.seek(0)
 
-        return send_file(output, mimetype='text/csv', as_attachment=True, download_name='resultado.csv')
+        return send_file(output, mimetype=mimetype, as_attachment=True, download_name=download_name)
     except Exception as e:
         return jsonify({'error': f'Error en la predicción: {str(e)}'}), 500
 
