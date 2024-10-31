@@ -88,6 +88,8 @@ def predict():
 
     try:
         data_df_preprocesado = preprocesar_datos(data_df_preparado)
+    except ValueError as ve:
+        return jsonify({'error': f'Error en el preprocesamiento de datos: {str(ve)}'}), 400
     except Exception as e:
         return jsonify({'error': f'Error en el preprocesamiento de datos: {str(e)}'}), 400
 
@@ -120,6 +122,7 @@ def predict():
         return send_file(output, mimetype=mimetype, as_attachment=True, download_name=download_name)
     except Exception as e:
         return jsonify({'error': f'Error en la predicción: {str(e)}'}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=os.getenv('PORT', default=5000))
