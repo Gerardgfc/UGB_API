@@ -25,7 +25,7 @@ escalador = StandardScaler()
 
 # Definir las columnas necesarias
 columnas_modelo = [
-    'income', 'name_email_similarity', 'current_address_months_count', 
+    'ID','income', 'name_email_similarity', 'current_address_months_count', 
     'customer_age', 'days_since_request', 'bank_branch_count_8w', 
     'date_of_birth_distinct_emails_4w', 'credit_risk_score', 'email_is_free', 
     'phone_home_valid', 'phone_mobile_valid', 'bank_months_count', 
