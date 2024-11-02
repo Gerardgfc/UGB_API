@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file, render_template
+from flask import Flask, request, jsonify, send_file
 import joblib
 import pandas as pd
 import os
@@ -60,10 +60,6 @@ def preprocesar_datos(data_df):
     except ValueError as e:
         raise ValueError(f"Error en la conversión de datos: {str(e)}")
 
-@app.route('/')
-def home():
-    return send_file('index.html')
-
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'file' not in request.files:
@@ -119,16 +115,12 @@ def predict():
             resultados_df.to_excel(output, index=False, engine='openpyxl')
             mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             download_name = f'resultado_{base_name}.xlsx'
-        else:
-            return jsonify({'error': 'Formato de archivo no soportado.'}), 400
         
         output.seek(0)
 
         return send_file(output, mimetype=mimetype, as_attachment=True, download_name=download_name)
     except Exception as e:
         return jsonify({'error': f'Error en la predicción: {str(e)}'}), 500
-
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
