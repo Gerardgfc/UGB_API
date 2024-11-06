@@ -1,4 +1,5 @@
-![DataFOrge](https://drive.google.com/u/0/drive-viewer/AKGpihawFnYHp64II-wv4GtYB-DhJXG-BJRDuKo5Tcjuzww9PWJyo9ol-tt_Tmz6eXdoqMEqrbUoNUlOj_3mMJN1nbJ96g97AbjeJQ=s2560)
+![DataFOrge](https://github.com/user-attachments/assets/97cce9d3-22e0-40dd-9ebb-6f6f0796fb0b)
+
 
 # UGB_API: Detección de Fraudes Financieros con Machine Learning
 
