@@ -10,18 +10,30 @@ UGB_API es una aplicación de programación de interfaces (API) diseñada para d
 
 ## Instalación y Uso
 
-### Clonación del Repositorio:
+### 1.Clonación del Repositorio:
 ```bash
 git clone https://github.com/Gerardgfc/UGB_API.git
 ```
-## Creación de un Entorno Virtual:
+## 2.Creación de un Entorno Virtual:
 
 ```bash
 python -m venv venv
 source venv/bin/activate
 ```
-##Instalación de Dependencias:
+## 3.Instalación de Dependencias:
 
 ````bash
 pip install -r requirements.txt
 ````
+## 4.Ejecución de la API:
+
+````bash
+python main.py
+````
+## 5.Realización de una Petición:
+
+````bash
+curl -X POST -F file=@tu_archivo.csv https://ugb-api-tests.onrender.com/
+````
+
+Donde <code>tu_archivo.csv</code> es el archivo CSV con los datos de las transacciones a evaluar.
