@@ -1,5 +1,7 @@
-![DataFOrge](https://github.com/user-attachments/assets/97cce9d3-22e0-40dd-9ebb-6f6f0796fb0b)
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/97cce9d3-22e0-40dd-9ebb-6f6f0796fb0b" width="200">
+</p>
 
 # UGB_API: Detección de Fraudes Financieros con Machine Learning
 
