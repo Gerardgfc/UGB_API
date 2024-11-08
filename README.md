@@ -5,15 +5,15 @@
 
 # 🚨 Detección de Fraudes Financieros con Machine Learning 💻
 
-## Descripción
+## Descripción 📊
 UGB_API es una aplicación de programación de interfaces (API) diseñada para detectar transacciones financieras fraudulentas. Emplea un modelo de `GradientBoostingClassifier` entrenado en un conjunto de datos financieros para identificar patrones anómalos que puedan indicar actividad fraudulenta. La API recibe como entrada un archivo CSV con datos estructurados de transacciones y devuelve un archivo CSV con las predicciones correspondientes, clasificando cada transacción como "fraude" o "no fraude".
 
-## Arquitectura y Funcionamiento
+## Arquitectura y Funcionamiento🏗️
 - **Preprocesamiento de Datos**: El modelo subyacente ha sido entrenado utilizando un conjunto de datos cuidadosamente seleccionado y preprocesado. Este proceso incluye la limpieza de datos, la transformación de variables y la ingeniería de características para optimizar el rendimiento del modelo.
 - **Modelo de Machine Learning**: Se ha utilizado un modelo de `GradientBoostingClassifier` debido a su capacidad para capturar interacciones complejas entre las variables y su alto rendimiento en problemas de clasificación.
 - **API RESTful**: La API expone un endpoint RESTful que permite a los clientes enviar solicitudes HTTP POST con los datos de entrada y recibir las predicciones en formato CSV.
 
-## Instalación y Uso
+## Instalación y Uso⚙️
 
 ### 1.Clonación del Repositorio:
 ```bash
@@ -43,14 +43,14 @@ curl -X POST -F file=@tu_archivo.csv https://ugb-api-tests.onrender.com/
 
 Donde <code>tu_archivo.csv</code> es el archivo CSV con los datos de las transacciones a evaluar.
 
-## Estructura del Proyecto
+## Estructura del Proyecto📂
 
 - **data**: Contiene los datos utilizados para el entrenamiento y la evaluación del modelo.
 - **models**: Almacena los modelos entrenados.
 - **notebooks**: Incluye los notebooks de Jupyter utilizados para el preprocesamiento, entrenamiento y evaluación del modelo.
 - **src**: Contiene el código fuente de la API.
 
-## Formatos de Datos
+## Formatos de Datos📝
 
 - **Entrada**: Archivo CSV con las siguientes columnas: `['ID', 'income', 'name_email_similarity', 'current_address_months_count', 
     'customer_age', 'days_since_request', 'bank_branch_count_8w', 
@@ -69,11 +69,11 @@ Donde <code>tu_archivo.csv</code> es el archivo CSV con los datos de las transac
     'device_os_other', 'device_os_windows', 'device_os_x11']`.
 - **Salida**: Archivo CSV con las mismas columnas de entrada y una columna adicional llamada "predicciones" con los valores "fraude" o "no fraude".
 
-## Limitaciones
+## Limitaciones🚧
 
 - **Tamaño de Archivo**: La API está limitada a procesar archivos CSV con un máximo de 999.999 filas.
 
-## Tecnologías usadas
+## Tecnologías usadas🛠️
 
 El proyecto hace uso de diversas tecnologías y herramientas para realizar un análisis exhaustivo. Algunas de las principales tecnologías utilizadas fueron:
 
@@ -90,11 +90,11 @@ El proyecto hace uso de diversas tecnologías y herramientas para realizar un an
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)
 
-## Subjerencias
+## Subjerencias📬
 
 Se valoran las sugerencias y comentarios a través de LinkedIn: [Gerardo Carrizo](https://www.linkedin.com/in/gerardo-carrizo/)
 
-## Front-end
+## Front-end💻
 
 La API alimenta un front-end desarrollado en [Js] y alojado en:
 
@@ -104,7 +104,7 @@ El código fuente del front-end se encuentra en el repositorio:
 
 [Repositorio dataforge](https://github.com/Gerardgfc/dataforge)
 
-## Autor
+## Autor👨‍💻
 
 [Gerardo Carrizo](https://www.linkedin.com/in/gerardo-carrizo/)  
 
