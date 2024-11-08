@@ -72,7 +72,23 @@ Donde <code>tu_archivo.csv</code> es el archivo CSV con los datos de las transac
 ## Limitaciones
 
 - **Tamaño de Archivo**: La API está limitada a procesar archivos CSV con un máximo de 999.999 filas.
-- **Modelo**: El modelo ha sido entrenado en un conjunto de datos específico y puede no generalizar perfectamente a todos los escenarios de fraude.
+
+## Tecnologías usadas
+
+El proyecto hace uso de diversas tecnologías y herramientas para realizar un análisis exhaustivo. Algunas de las principales tecnologías utilizadas fueron:
+
+[![Visual Studio Code](https://img.shields.io/badge/IDE-Visual%20Studio%20Code-blue)](https://code.visualstudio.com/) 
+[![Pandas](https://img.shields.io/badge/Library-Pandas-brightgreen)](https://pandas.pydata.org/)
+[![Matplotlib](https://img.shields.io/badge/Library-Matplotlib-blue)](https://matplotlib.org/)
+[![Seaborn](https://img.shields.io/badge/Library-Seaborn-yellow)](https://seaborn.pydata.org/)
+[![GitHub](https://img.shields.io/badge/Platform-GitHub-lightgrey)](https://github.com/)
+[![Git](https://img.shields.io/badge/Version%20Control-Git-blue)](https://git-scm.com/)
+[![Power BI](https://img.shields.io/badge/BI%20Tool-Power%20BI-yellow)](https://powerbi.microsoft.com/)
+![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
+![Jupyter Notebook](https://img.shields.io/badge/jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=white)
+![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)
 
 ## Subjerencias
 
