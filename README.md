@@ -3,7 +3,7 @@
   <img src="https://github.com/user-attachments/assets/97cce9d3-22e0-40dd-9ebb-6f6f0796fb0b" width="200">
 </p>
 
-# UGB_API: Detección de Fraudes Financieros con Machine Learning
+# 🚨 Detección de Fraudes Financieros con Machine Learning 💻
 
 ## Descripción
 UGB_API es una aplicación de programación de interfaces (API) diseñada para detectar transacciones financieras fraudulentas. Emplea un modelo de `GradientBoostingClassifier` entrenado en un conjunto de datos financieros para identificar patrones anómalos que puedan indicar actividad fraudulenta. La API recibe como entrada un archivo CSV con datos estructurados de transacciones y devuelve un archivo CSV con las predicciones correspondientes, clasificando cada transacción como "fraude" o "no fraude".
@@ -84,7 +84,7 @@ El proyecto hace uso de diversas tecnologías y herramientas para realizar un an
 [![GitHub](https://img.shields.io/badge/Platform-GitHub-lightgrey)](https://github.com/)
 [![Git](https://img.shields.io/badge/Version%20Control-Git-blue)](https://git-scm.com/)
 [![Power BI](https://img.shields.io/badge/BI%20Tool-Power%20BI-yellow)](https://powerbi.microsoft.com/)
-![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
 ![Jupyter Notebook](https://img.shields.io/badge/jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=white)
 ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
